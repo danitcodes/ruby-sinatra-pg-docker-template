@@ -1,8 +1,12 @@
 version: '3.9'
 services:
   db:
+    #base layer Postgres image
     image: postgres:12.1
+    #allows for persisting data
+    #volume - a file system that's mounted on the container
     volumes:
+      #configuration option
       - ./tmp/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: password
@@ -13,7 +17,9 @@ services:
     ports:
       - "4567:4567"
     depends_on:
+      #"web app depends on the database"
       - db
     restart: on-failure
+    #included to restart in case the database isn't ready to go when the web app gets spun up
     stdin_open: true
     tty: true
